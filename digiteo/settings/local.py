@@ -1,4 +1,8 @@
 from .base import *
 
 DEBUG = True  # 로컬에서 True 프로덕션에선 False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+# CORS 설정 - whitelist 에 추가된 주소 접근 허용
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000', 'http://localhost:3000']
+CORS_ALLOW_CREDENTIALS = True
