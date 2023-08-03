@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # my app
     'accounts',
+    'posts',
 
     # django rest_framework
     'rest_framework',
