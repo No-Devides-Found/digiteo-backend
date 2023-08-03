@@ -54,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-    user_id = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     nickname = models.CharField(max_length=10, unique=True)
     birth = models.DateField(auto_now=False, auto_now_add=False)
     job = models.CharField(max_length=10)
