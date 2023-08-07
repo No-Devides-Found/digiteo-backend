@@ -9,6 +9,12 @@ class PostBase(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class FileTypeChoice(models.IntegerChoices):
+    VIDEO = 1, "Video"
+    IMAGE = 2, "Image"
+    VOICE = 3, "Voice"
+    DOCUMENT = 4, "Document"
+
 # # 배움터
 # class QnA(PostBase):
 #     pass

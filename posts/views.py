@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from .serializers import *
+from .models.practice import *
+from rest_framework import viewsets, permissions
 
-# Create your views here.
+
+class PracticeViewSet(viewsets.ModelViewSet):
+    queryset = Practice.objects.all()
+    serializer_class = PracticeSerializer

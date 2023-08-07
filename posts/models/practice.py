@@ -1,16 +1,17 @@
 from django.db import models
-from posts.models.models import PostBase
+from posts.models.models import PostBase, FileTypeChoice
 
 
 # 창작물
 class Creation(models.Model):
     practice = models.ForeignKey(
-        "posts.Practice", on_delete=models.CASCADE)
-    order = models.IntegerField(null=False)
+        "posts.Practice", on_delete=models.CASCADE, related_name="creations")
+    order = models.IntegerField(null=False, default=0)
     filename = models.CharField(max_length=30)
-    file = models.FileField(
-        upload_to="practice/creation/%Y%m%d", max_length=100)  # FIXME: 추후 base64로 변경 가능
-    file_type = models.CharField(max_length=10)
+    file = models.TextField()  # base64
+    file_type = models.PositiveSmallIntegerField(
+        choices=FileTypeChoice.choices,
+        default=FileTypeChoice.VIDEO)
 
 
 # 실습(창작마루)
