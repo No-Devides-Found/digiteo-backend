@@ -2,11 +2,12 @@ from django.db import models
 
 class Program(models.Model):
     title = models.CharField(max_length=50, unique=True)
-    introduce = models.TextField(max_length=500)
-    review = models.TextField(max_length=500, default="")
+    introduce = models.TextField()
+    review = models.TextField(default="")
     assignment_id = models.ForeignKey("Assignment", on_delete=models.CASCADE)
-    thumbnail = models.ImageField
+    thumbnail = models.ImageField(upload_to="program/%Y%m%d")
     category_id = models.ForeignKey("Category", on_delete=models.CASCADE)
+    tag = models.ManyToManyField("Tags", related_name="Program_Tags_Map")
 
 
 class Category(models.Model):
@@ -14,20 +15,28 @@ class Category(models.Model):
     category = models.CharField(max_length=10, unique=True)
 
 
-#  논의 필요
-# class Quiz(models.Model):
-#     program_id = models.ForeignKey("Program", on_delete=models.CASCADE)
-#     question = models.TextField(max_length=500)
-#     passage = models.TextField(max_length=500, default="")
-#     answer = 
-
 class Contents(models.Model):
     program_id = models.ForeignKey("Program", on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    content = models.TextField(max_length=500)
-    order = models.IntegerField
+    content = models.TextField()
+    order = models.IntegerField()
 
 
-# 논의 필요
-# class Assignment(models.Model):
-#     pass
+class Quiz(models.Model):
+    program_id = models.ForeignKey("Program", on_delete=models.CASCADE)
+    question = models.TextField()
+    answer = models.BooleanField()
+
+
+class Assignment(models.Model):
+    submit = models.FileField(upload_to="assignment/submit/%Y%m%d")
+    guide_text = models.TextField(default="")
+    guide_ref = models. FileField(upload_to="assignment/guide_ref/%Y%m%d")
+    title = models.CharField(max_length=50)
+
+
+class Tags(models.Model):
+    tag = models.CharField(max_length=10, unique=True)
+
+    def __str__(self):
+        return self.tag
