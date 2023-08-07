@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from .serializers import *
+from .models import *
+from rest_framework import viewsets, permissions
 
-# Create your views here.
+class ProgramViewSet(viewsets.ModelViewSet):
+	queryset = Program.objects.all()
+	serializer_class = ProgramSerializer
+

@@ -5,7 +5,7 @@ class Program(models.Model):
     introduce = models.TextField()
     review = models.TextField(default="")
     assignment_id = models.ForeignKey("Assignment", on_delete=models.CASCADE)
-    thumbnail = models.ImageField(upload_to="program/%Y%m%d")
+    thumbnail = models.ImageField(upload_to="programs/thumbnail/%Y%m%d")
     category_id = models.ForeignKey("Category", on_delete=models.CASCADE)
     tag = models.ManyToManyField("Tags", related_name="Program_Tags_Map")
 
@@ -13,6 +13,9 @@ class Program(models.Model):
 class Category(models.Model):
     # 카테고리 명
     category = models.CharField(max_length=10, unique=True)
+
+    def __str__(self):
+        return self.category
 
 
 class Contents(models.Model):
@@ -29,9 +32,9 @@ class Quiz(models.Model):
 
 
 class Assignment(models.Model):
-    submit = models.FileField(upload_to="assignment/submit/%Y%m%d")
+    submit = models.FileField(upload_to="programs/assignment/submit/%Y%m%d", blank=True, null=True)
     guide_text = models.TextField(default="")
-    guide_ref = models. FileField(upload_to="assignment/guide_ref/%Y%m%d")
+    guide_ref = models. FileField(upload_to="programs/assignment/guide_ref/%Y%m%d")
     title = models.CharField(max_length=50)
 
 
