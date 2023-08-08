@@ -176,7 +176,8 @@ REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'access_token',
     'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
-    'JWT_AUTH_HTTPONLY': False
+    'JWT_AUTH_HTTPONLY': False,
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer"
 }
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # username 필드 사용 x
