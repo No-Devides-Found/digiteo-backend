@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # my app
     'accounts',
     'programs',
+    'posts',
 
     # django rest_framework
     'rest_framework',
@@ -143,6 +144,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -171,7 +176,8 @@ REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'access_token',
     'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
-    'JWT_AUTH_HTTPONLY': False
+    'JWT_AUTH_HTTPONLY': False,
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer"
 }
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # username 필드 사용 x
