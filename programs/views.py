@@ -27,7 +27,12 @@ class AssignmentViewSet(viewsets.ModelViewSet):
 	serializer_class = AssignmentSerializer
 
 
-class TagsViewSet(viewsets.ModelViewSet):
-	queryset = Tags.objects.all()
-	serializer_class = TagsSerializer
+class TagViewSet(viewsets.ModelViewSet):
+	queryset = Tag.objects.all()
+	serializer_class = TagSerializer
+
+
+class Program_Tag_MapViewSet(viewsets.ModelViewSet):
+	queryset = Program_Tag_Map.objects.all()
+	serializer_class = Program_Tag_MapSerializer
 

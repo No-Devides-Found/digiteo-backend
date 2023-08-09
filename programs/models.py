@@ -9,9 +9,9 @@ class Program(models.Model):
     category_id = models.ForeignKey("Category", on_delete=models.CASCADE)
 
 
-class Program_Tags_Map(models.Model):
+class Program_Tag_Map(models.Model):
     program_id = models.ForeignKey("Program", on_delete=models.CASCADE)
-    tag_id = models.ForeignKey("Tags", on_delete=models.CASCADE)
+    tag_id = models.ForeignKey("Tag", on_delete=models.CASCADE)
 
  
 class Category(models.Model):
@@ -41,7 +41,7 @@ class Assignment(models.Model):
     title = models.CharField(max_length=50)
 
 
-class Tags(models.Model):
+class Tag(models.Model):
     name = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
