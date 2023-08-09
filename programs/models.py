@@ -7,15 +7,18 @@ class Program(models.Model):
     assignment_id = models.ForeignKey("Assignment", on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to="programs/thumbnail/%Y%m%d")
     category_id = models.ForeignKey("Category", on_delete=models.CASCADE)
-    tag = models.ManyToManyField("Tags", related_name="Program_Tags_Map")
 
 
+class Program_Tags_Map(models.Model):
+    program_id = models.ForeignKey("Program", on_delete=models.CASCADE)
+    tag_id = models.ForeignKey("Tags", on_delete=models.CASCADE)
+
+ 
 class Category(models.Model):
-    # 카테고리 명
-    category = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
-        return self.category
+        return self.name
 
 
 class Contents(models.Model):
@@ -39,7 +42,7 @@ class Assignment(models.Model):
 
 
 class Tags(models.Model):
-    tag = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
-        return self.tag
+        return self.name

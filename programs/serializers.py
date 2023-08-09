@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Program, Category, Contents, Quiz, Assignment, Tags
 
 class ProgramSerializer(serializers.ModelSerializer):
+	category_id = serializers.StringRelatedField()
+	tag_id = serializers.StringRelatedField()
 	
 	def create(self, validated_data):
 		program = Program.objects.create(**validated_data)
@@ -10,6 +12,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Program
 		fields = '__all__'
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
