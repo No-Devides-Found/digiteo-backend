@@ -1,5 +1,17 @@
 from rest_framework import serializers
-from .models import Program, Category, Contents, Quiz, Assignment, Tags
+from .models import Program, Category, Contents, Quiz, Assignment, Tag, Program_Tag_Map
+
+class Program_Tag_MapSerializer(serializers.ModelSerializer):
+	program_id = serializers.StringRelatedField()
+	tag_id = serializers.StringRelatedField()
+	
+	def create(self, validated_data):
+		program_tag_map = Program_Tag_Map.objects.create(**validated_data)
+		return program_tag_map
+	
+	class Meta:
+		model = Program_Tag_Map
+		fields = '__all__'
 
 class ProgramSerializer(serializers.ModelSerializer):
 	category_id = serializers.StringRelatedField()
@@ -60,12 +72,12 @@ class AssignmentSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 
-class TagsSerializer(serializers.ModelSerializer):
+class TagSerializer(serializers.ModelSerializer):
 	
 	def create(self, validated_data):
-		tags = Tags.objects.create(**validated_data)
-		return tags
+		tag = Tag.objects.create(**validated_data)
+		return tag
 	
 	class Meta:
-		model = Tags
+		model = Tag
 		fields = '__all__'

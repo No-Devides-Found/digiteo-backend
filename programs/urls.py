@@ -8,8 +8,8 @@ router.register('category', views.CategoryViewSet)
 router.register('contents', views.ContentsViewSet)
 router.register('quiz', views.QuizViewSet)
 router.register('assignment', views.AssignmentViewSet)
-router.register('tags', views.TagsViewSet)
-
+router.register('tag', views.TagViewSet)
+router.register('program_tag_map', views.Program_Tag_MapViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
