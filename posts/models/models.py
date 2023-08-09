@@ -15,9 +15,14 @@ class FileTypeChoice(models.IntegerChoices):
     VOICE = 3, "Voice"
     DOCUMENT = 4, "Document"
 
-# # 배움터
-# class QnA(PostBase):
-#     pass
+# 배움터
+class QnA(PostBase):
+    title = models.CharField(max_length=50)
+    content = models.TextField()
+
+class QnA_Image(models.Model):
+    qna_id = models.ForeignKey("QnA", on_delete=models.CASCADE)
+    file = models.ImageField(upload_to="posts/qna/%Y%m%d", blank=True, null=True)
 
 
 # # 나눔터
