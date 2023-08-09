@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models.models import QnA
 from .models.practice import Practice, Creation
 
 
@@ -24,4 +25,14 @@ class PracticeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Practice
+        fields = '__all__'
+
+
+class QnASerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        qna = QnA.objects.create(**validated_data)
+        return qna
+
+    class Meta:
+        model = QnA
         fields = '__all__'
