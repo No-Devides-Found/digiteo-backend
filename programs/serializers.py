@@ -3,7 +3,7 @@ from .models import Program, Category, Contents, Quiz, Assignment, Tag, Program_
 
 class Program_Tag_MapSerializer(serializers.ModelSerializer):
 	program_id = serializers.StringRelatedField()
-	tag_id = serializers.StringRelatedField()
+	tag_id = serializers.StringRelatedField
 	
 	def create(self, validated_data):
 		program_tag_map = Program_Tag_Map.objects.create(**validated_data)
@@ -15,7 +15,7 @@ class Program_Tag_MapSerializer(serializers.ModelSerializer):
 
 class ProgramSerializer(serializers.ModelSerializer):
 	category_id = serializers.StringRelatedField()
-	tag_id = serializers.StringRelatedField()
+	Tag = Program_Tag_MapSerializer(many=True, allow_null=True)
 	
 	def create(self, validated_data):
 		program = Program.objects.create(**validated_data)
