@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import Report
 from posts.models.models import TargetPost
-from posts.models import QnA, Practice
+from posts.models.practice import Practice
+from posts.models.baeumteo import QnA
 from posts.serializers import TargetPostSerializer
 
 

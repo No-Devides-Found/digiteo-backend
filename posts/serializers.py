@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Practice, Creation, QnA
+from .models.practice import Practice, Creation
 from .models.models import TargetPost
+from .models.baeumteo import QnA, QnA_Image
 
 
 class CreationSerializer(serializers.ModelSerializer):
