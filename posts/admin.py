@@ -7,4 +7,5 @@ from .models.baeumteo import QnA, QnA_Image
 admin.site.register(Practice)
 admin.site.register(Creation)
 admin.site.register(QnA)
+admin.site.register(QnA_Image)
 admin.site.register(TargetPost)

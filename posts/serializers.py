@@ -30,6 +30,15 @@ class PracticeSerializer(serializers.ModelSerializer):
 
 
 class QnASerializer(serializers.ModelSerializer):
+    file = serializers.SerializerMethodField(allow_null=True)
+
+    def get_file(self, obj):
+        qna_images = QnA_Image.objects.filter(qna=obj.id)
+        image_list = []
+        for qna_image in qna_images:
+            image_list.append(qna_image.file.url)  # Use qna_image.file instead of qna_image.image
+        return image_list
+    
     def create(self, validated_data):
         qna = QnA.objects.create(**validated_data)
         return qna
@@ -37,6 +46,25 @@ class QnASerializer(serializers.ModelSerializer):
     class Meta:
         model = QnA
         fields = '__all__'
+
+
+# class QnASerializer(serializers.ModelSerializer):
+#     file = serializers.SerializerMethodField(allow_null=True)
+
+#     def get_file(self, obj):
+#         qna_image = QnA_Image.objects.filter(qna=obj.id)
+#         image_list = []
+#         for qna in qna_image:
+#             image_list.append(qna.image)
+#         return image_list
+    
+#     def create(self, validated_data):
+#         qna = QnA.objects.create(**validated_data)
+#         return qna
+
+#     class Meta:
+#         model = QnA
+#         fields = '__all__'
 
 
 class TargetPostSerializer(serializers.ModelSerializer):
