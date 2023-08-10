@@ -11,3 +11,8 @@ class PracticeViewSet(viewsets.ModelViewSet):
 class QnAViewSet(viewsets.ModelViewSet):
     queryset = QnA.objects.all()
     serializer_class = QnASerializer
+
+
+class AgoraViewSet(viewsets.ModelViewSet):
+    queryset = Agora.objects.all()
+    serializer_class = AgoraSerializer

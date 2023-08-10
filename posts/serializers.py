@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models.practice import Practice, Creation
 from .models.models import TargetPost
-from .models.baeumteo import QnA, QnA_Image
+from .models.baeumteo import QnA, QnA_Image, Agora
 
 
 class CreationSerializer(serializers.ModelSerializer):
@@ -36,7 +36,7 @@ class QnASerializer(serializers.ModelSerializer):
         qna_images = QnA_Image.objects.filter(qna=obj.id)
         image_list = []
         for qna_image in qna_images:
-            image_list.append(qna_image.file.url)  # Use qna_image.file instead of qna_image.image
+            image_list.append(qna_image.file.url)
         return image_list
     
     def create(self, validated_data):
@@ -48,25 +48,6 @@ class QnASerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class QnASerializer(serializers.ModelSerializer):
-#     file = serializers.SerializerMethodField(allow_null=True)
-
-#     def get_file(self, obj):
-#         qna_image = QnA_Image.objects.filter(qna=obj.id)
-#         image_list = []
-#         for qna in qna_image:
-#             image_list.append(qna.image)
-#         return image_list
-    
-#     def create(self, validated_data):
-#         qna = QnA.objects.create(**validated_data)
-#         return qna
-
-#     class Meta:
-#         model = QnA
-#         fields = '__all__'
-
-
 class TargetPostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         target_post = TargetPost.objects.create(**validated_data)
@@ -74,4 +55,14 @@ class TargetPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TargetPost
+        fields = '__all__'
+
+
+class AgoraSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        agora = Agora.objects.create(**validated_data)
+        return agora
+
+    class Meta:
+        model = Agora
         fields = '__all__'
