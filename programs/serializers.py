@@ -3,29 +3,31 @@ from .models import Program, Category, Contents, Quiz, Assignment, Tag, Program_
 
 
 class Program_Tag_MapSerializer(serializers.ModelSerializer):
-    program_id = serializers.StringRelatedField()
-    tag_id = serializers.StringRelatedField()
-
-    def create(self, validated_data):
-        program_tag_map = Program_Tag_Map.objects.create(**validated_data)
-        return program_tag_map
-
-    class Meta:
-        model = Program_Tag_Map
-        fields = '__all__'
-
+	def create(self, validated_data):
+		program_tag_map = Program_Tag_Map.objects.create(**validated_data)
+		return program_tag_map
+	
+	class Meta:
+		model = Program_Tag_Map
+		fields = '__all__'
 
 class ProgramSerializer(serializers.ModelSerializer):
-    category_id = serializers.StringRelatedField()
-    tag_id = serializers.StringRelatedField()
-
-    def create(self, validated_data):
-        program = Program.objects.create(**validated_data)
-        return program
-
-    class Meta:
-        model = Program
-        fields = '__all__'
+	tag = serializers.SerializerMethodField()
+	
+	def get_tag(self, obj):
+		program_tag_map = Program_Tag_Map.objects.filter(program=obj.id)
+		tag_list = []
+		for program_tag in program_tag_map:
+			tag_list.append(program_tag.tag.name)
+		return tag_list
+	
+	def create(self, validated_data):
+		program = Program.objects.create(**validated_data)
+		return program
+	
+	class Meta:
+		model = Program
+		fields = '__all__'
 
 
 class CategorySerializer(serializers.ModelSerializer):
