@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'programs',
     'posts',
+    'reports',
 
     # django rest_framework
     'rest_framework',

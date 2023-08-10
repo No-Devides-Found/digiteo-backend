@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models.models import QnA
-from .models.practice import Practice, Creation
+from .models import Practice, Creation, QnA
+from .models.models import TargetPost
 
 
 class CreationSerializer(serializers.ModelSerializer):
@@ -35,4 +35,14 @@ class QnASerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QnA
+        fields = '__all__'
+
+
+class TargetPostSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        target_post = TargetPost.objects.create(**validated_data)
+        return target_post
+
+    class Meta:
+        model = TargetPost
         fields = '__all__'

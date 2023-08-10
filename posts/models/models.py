@@ -15,14 +15,25 @@ class FileTypeChoice(models.IntegerChoices):
     VOICE = 3, "Voice"
     DOCUMENT = 4, "Document"
 
-# 배움터
-class QnA(PostBase):
-    title = models.CharField(max_length=50)
-    content = models.TextField()
 
-class QnA_Image(models.Model):
-    qna_id = models.ForeignKey("QnA", on_delete=models.CASCADE)
-    file = models.ImageField(upload_to="posts/qna/%Y%m%d", blank=True, null=True)
+class TargetPost(models.Model):
+    # ['qna', 'practice', ...]
+    target_post_type = models.CharField(max_length=10, null=False, default="")
+
+    qna = models.ForeignKey(
+        "posts.QnA", null=True, blank=True, on_delete=models.CASCADE)
+    practice = models.ForeignKey(
+        "posts.Practice", null=True, blank=True, on_delete=models.CASCADE)
+    # 모델 개발되는대로 여기 추가하기
+
+    @property
+    def target(self):
+        if self.qna_id is not None:
+            return self.qna
+        if self.practice_id is not None:
+            return self.practice
+
+        raise AssertionError("Target is not set")
 
 
 # # 나눔터
