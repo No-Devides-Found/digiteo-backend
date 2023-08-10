@@ -6,12 +6,12 @@ class Program(models.Model):
     review = models.TextField(default="")
     assignment_id = models.ForeignKey("Assignment", on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to="programs/thumbnail/%Y%m%d")
-    category_id = models.ForeignKey("Category", on_delete=models.CASCADE)
+    category = models.ForeignKey("Category", on_delete=models.CASCADE)
 
 
 class Program_Tag_Map(models.Model):
-    program_id = models.ForeignKey("Program", on_delete=models.CASCADE)
-    tag_id = models.ForeignKey("Tag", on_delete=models.CASCADE, null=True)
+    program = models.ForeignKey("Program", on_delete=models.CASCADE)
+    tag = models.ForeignKey("Tag", on_delete=models.CASCADE, null=True)
 
  
 class Category(models.Model):
@@ -22,14 +22,14 @@ class Category(models.Model):
 
 
 class Contents(models.Model):
-    program_id = models.ForeignKey("Program", on_delete=models.CASCADE)
+    program = models.ForeignKey("Program", on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     content = models.TextField()
     order = models.IntegerField()
 
 
 class Quiz(models.Model):
-    program_id = models.ForeignKey("Program", on_delete=models.CASCADE)
+    program = models.ForeignKey("Program", on_delete=models.CASCADE)
     question = models.TextField()
     answer = models.BooleanField()
 
