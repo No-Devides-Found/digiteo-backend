@@ -55,8 +55,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
-    nickname = models.CharField(max_length=10, unique=True)
+    nickname = models.CharField(max_length=10, unique=False)
     birth = models.DateField(auto_now=False, auto_now_add=False)
     job = models.CharField(max_length=10)
-    grade = models.CharField(default="", max_length=5)
-    department = models.CharField(max_length=20)
+    grade = models.CharField(default="", blank=True, max_length=5)
+    department = models.CharField(default="", blank=True, max_length=20)
