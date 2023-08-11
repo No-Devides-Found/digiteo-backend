@@ -36,9 +36,6 @@ class TargetPost(models.Model):
         raise AssertionError("Target is not set")
 
 
-# # 나눔터
-# class Tip(PostBase):
-#     pass
 
 
 # # 댓글

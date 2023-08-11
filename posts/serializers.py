@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models.practice import Practice, Creation
 from .models.models import TargetPost
 from .models.baeumteo import QnA, QnA_Image, Agora
+from .models.nanumteo import Tip, Tip_Image
 
 
 class CreationSerializer(serializers.ModelSerializer):
@@ -65,4 +66,22 @@ class AgoraSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Agora
+        fields = '__all__'
+
+class TipSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField(allow_null=True)
+
+    def get_image(self, obj):
+        tip_images = Tip_Image.objects.filter(tip=obj.id)
+        image_list = []
+        for tip_image in tip_images:
+            image_list.append(tip_image.image.url)
+        return image_list
+    
+    def create(self, validated_data):
+        tip = Tip.objects.create(**validated_data)
+        return tip
+    
+    class Meta:
+        model = Tip
         fields = '__all__'
