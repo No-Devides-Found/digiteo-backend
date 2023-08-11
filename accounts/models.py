@@ -60,9 +60,3 @@ class Profile(models.Model):
     job = models.CharField(max_length=10)
     grade = models.CharField(default="", max_length=5)
     department = models.CharField(max_length=20)
-
-
-# class User_Program_Map(models.Model):
-#     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
-#     program = models.ForeignKey("programs.Program", on_delete=models.CASCADE)
-#     # is_admin = models.BooleanField(default=False)
