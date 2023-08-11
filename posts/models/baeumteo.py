@@ -1,5 +1,5 @@
 from django.db import models
-from .models import PostBase
+from posts.models.models import PostBase
 
 
 # 배움터

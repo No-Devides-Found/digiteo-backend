@@ -2,8 +2,7 @@ from rest_framework import serializers
 from .models.practice import Practice, Creation
 from .models.models import TargetPost
 from .models.baeumteo import QnA, QnA_Image, Agora
-from .models.nanumteo import Tip, Tip_Tag_Map, Tip_Image
-from programs.models import Tag
+
 
 class CreationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
@@ -67,57 +66,3 @@ class AgoraSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agora
         fields = '__all__'
-
-
-class TipSerializer(serializers.ModelSerializer):
-    tag = serializers.SerializerMethodField()
-    file = serializers.SerializerMethodField(allow_null=True)
-
-    def get_tag(self, obj):
-        tip_tag_maps = Tip_Tag_Map.objects.filter(tip=obj.id)
-        tag_list = []
-        for tip_tag_map in tip_tag_maps:
-            tag_list.append(tip_tag_maps.tag.name)
-        return tag_list
-
-    def get_file(self, obj):
-        tip_images = Tip_Image.objects.filter(tip=obj.id)
-        image_list = []
-        for tip_image in tip_images:
-            image_list.append(tip_image.file.url)
-        return image_list
-
-    def create(self, validated_data):
-        tip = Tip.objects.create(**validated_data)
-        return tip
-
-    class Meta:
-        model = Tip
-        fields = '__all__'
-
-
-# class TipSerializer(serializers.ModelSerializer):
-#     tag = serializers.SerializerMethodField()
-#     file = serializers.SerializerMethodField(allow_null=True)
-
-#     def get_tag(self, obj):
-#         tip_tag_map = Tip_Tag_Map.objects.filter(tip=obj.id)
-#         tag_list = []
-#         for tip_tag in tip_tag_map:
-#             tag_list.append(tip_tag.tag.name)
-#         return tag_list
-
-#     def get_file(self, obj):
-#         tip_images = Tip_Image.objects.filter(tip=obj.id)
-#         image_list = []
-#         for tip_image in tip_images:
-#             image_list.append(tip_image.file.url)
-#         return image_list
-
-#     def create(self, validated_data):
-#         tip = Tip.objects.create(**validated_data)
-#         return tip
-
-#     class Meta:
-#         model = Tip
-#         fields = '__all__'
