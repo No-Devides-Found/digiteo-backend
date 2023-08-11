@@ -13,3 +13,7 @@ class Tip_Image(models.Model):
     image = models.ImageField(
         upload_to="posts/tip/%Y%m%d", blank=True, null=True)
     
+
+class Tip_Tag_Map(models.Model):
+    tip = models.ForeignKey("Tip", on_delete=models.CASCADE)
+    tag = models.ForeignKey("programs.Tag", on_delete=models.CASCADE, null=True)

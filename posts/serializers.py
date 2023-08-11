@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models.practice import Practice, Creation
 from .models.models import TargetPost
 from .models.baeumteo import QnA, QnA_Image, Agora
-from .models.nanumteo import Tip, Tip_Image
+from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
 
 
 class CreationSerializer(serializers.ModelSerializer):
@@ -68,8 +68,18 @@ class AgoraSerializer(serializers.ModelSerializer):
         model = Agora
         fields = '__all__'
 
+class Tip_Tag_MapSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        tip_tag_map = Tip_Tag_Map.objects.create(**validated_data)
+        return tip_tag_map
+    
+    class Meta:
+        model = Tip_Tag_Map
+        fields = '__all__'
+
 class TipSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField(allow_null=True)
+    tag = serializers.SerializerMethodField()
 
     def get_image(self, obj):
         tip_images = Tip_Image.objects.filter(tip=obj.id)
@@ -77,6 +87,13 @@ class TipSerializer(serializers.ModelSerializer):
         for tip_image in tip_images:
             image_list.append(tip_image.image.url)
         return image_list
+    
+    def get_tag(self, obj):
+        tip_tag_map = Tip_Tag_Map.objects.filter(tip=obj.id)
+        tag_list = []
+        for tip_tag in tip_tag_map:
+            tag_list.append(tip_tag.tag.name)
+        return tag_list
     
     def create(self, validated_data):
         tip = Tip.objects.create(**validated_data)
