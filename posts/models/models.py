@@ -24,6 +24,8 @@ class TargetPost(models.Model):
         "posts.QnA", null=True, blank=True, on_delete=models.CASCADE)
     practice = models.ForeignKey(
         "posts.Practice", null=True, blank=True, on_delete=models.CASCADE)
+    program = models.ForeignKey(
+        "programs.Program", null=True, blank=True, on_delete=models.CASCADE)
     # 모델 개발되는대로 여기 추가하기
 
     @property
@@ -32,6 +34,8 @@ class TargetPost(models.Model):
             return self.qna
         if self.practice_id is not None:
             return self.practice
+        if self.program_id is not None:
+            return self.program
 
         raise AssertionError("Target is not set")
 
