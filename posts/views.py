@@ -16,3 +16,8 @@ class QnAViewSet(viewsets.ModelViewSet):
 class AgoraViewSet(viewsets.ModelViewSet):
     queryset = Agora.objects.all()
     serializer_class = AgoraSerializer
+
+
+class TipViewSet(viewsets.ModelViewSet):
+    queryset = Tip.objects.all()
+    serializer_class = TipSerializer
