@@ -40,12 +40,6 @@ class AssignmentViewSet(viewsets.ModelViewSet):
 # 	serializer_class = Program_Tag_MapSerializer
 
 
-# class AttendRankViewSet(viewsets.ViewSet):
-# 	queryset = Program.objects.all()
-# 	serializer_class = AttendRankSerializer
-# 	permission_classes = [permissions.AllowAny]
-
-
 class AttendRankViewSet(viewsets.ViewSet):
     queryset = Program.objects.all()
     serializer_class = AttendRankSerializer
