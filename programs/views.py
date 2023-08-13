@@ -42,7 +42,7 @@ class AssignmentViewSet(viewsets.ModelViewSet):
 
 class AttendRankViewSet(viewsets.ViewSet):
     queryset = Program.objects.all()
-    serializer_class = AttendRankSerializer
+    serializer_class = ProgramSerializer
     permission_classes = [permissions.AllowAny]
 
     def list(self, request):
