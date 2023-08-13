@@ -88,7 +88,3 @@ class AssignmentSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Tag
 #         fields = '__all__'
-
-
-class AttendRankSerializer(serializers.Serializer):
-	program = ProgramSerializer(many=True, read_only=True)
