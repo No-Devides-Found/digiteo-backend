@@ -1,10 +1,13 @@
 from .serializers import *
 from .models import *
 from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
 
 class ProgramViewSet(viewsets.ModelViewSet):
 	queryset = Program.objects.all()
 	serializer_class = ProgramSerializer
+	
 
 
 # class CategoryViewSet(viewsets.ModelViewSet):
@@ -36,3 +39,23 @@ class AssignmentViewSet(viewsets.ModelViewSet):
 # 	queryset = Program_Tag_Map.objects.all()
 # 	serializer_class = Program_Tag_MapSerializer
 
+
+# class AttendRankViewSet(viewsets.ViewSet):
+# 	queryset = Program.objects.all()
+# 	serializer_class = AttendRankSerializer
+# 	permission_classes = [permissions.AllowAny]
+
+
+class AttendRankViewSet(viewsets.ViewSet):
+    queryset = Program.objects.all()
+    serializer_class = AttendRankSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def list(self, request):
+        programs = Program.objects.all()
+        serializer = ProgramSerializer(programs, many=True)
+
+        sorted_programs = sorted(serializer.data, key=lambda x: x['participants_cnt'], reverse=True)
+        top_5_programs = sorted_programs[:5]
+
+        return Response(top_5_programs)
