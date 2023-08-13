@@ -26,6 +26,8 @@ class TargetPost(models.Model):
         "posts.Practice", null=True, blank=True, on_delete=models.CASCADE)
     agora = models.ForeignKey(
         "posts.Agora", null=True, blank=True, on_delete=models.CASCADE)
+    tip = models.ForeignKey(
+        "posts.Tip", null=True, blank=True, on_delete=models.CASCADE)
     # 모델 개발되는대로 여기 추가하기
 
     @property
@@ -36,6 +38,8 @@ class TargetPost(models.Model):
             return self.practice
         if self.agora_id is not None:
             return self.agora
+        if self.tip_id is not None:
+            return self.tip
 
         raise AssertionError("Target is not set")
 
