@@ -3,7 +3,6 @@ from django.db import models
 class Program(models.Model):
     title = models.CharField(max_length=50, unique=True)
     introduce = models.TextField()
-    review = models.TextField(default="")
     assignment_id = models.ForeignKey("Assignment", on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to="programs/thumbnail/%Y%m%d")
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
@@ -46,3 +45,8 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Program_User_Map(models.Model):
+    program = models.ForeignKey("Program", on_delete=models.CASCADE)
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
