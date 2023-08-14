@@ -49,8 +49,3 @@ class TargetPost(models.Model):
 # # 댓글
 # class Comment(PostBase):
 #     pass
-
-
-# # 강의평
-# class Evaluation(PostBase):
-#     pass
