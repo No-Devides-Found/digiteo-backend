@@ -19,7 +19,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 	score = serializers.SerializerMethodField(read_only=True)
 	
 	def get_participants_cnt(self, obj):
-		program_user_maps = Program_User_Map.objects.filter(program=obj.id).filter(is_participated=True)
+		program_user_maps = Program_User_Map.objects.filter(program=obj.id).filter(participate=True)
 		return len(program_user_maps) 
 	
 	def get_tag(self, obj):
