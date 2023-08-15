@@ -3,6 +3,7 @@ from .models.practice import Practice, Creation
 from .models.models import TargetPost
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
+from .models.evaluation import Evaluation
 
 admin.site.register(Practice)
 admin.site.register(Creation)
@@ -13,3 +14,4 @@ admin.site.register(Agora)
 admin.site.register(Tip)
 admin.site.register(Tip_Image)
 admin.site.register(Tip_Tag_Map)
+admin.site.register(Evaluation)

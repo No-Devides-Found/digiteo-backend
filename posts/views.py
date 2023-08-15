@@ -21,3 +21,8 @@ class AgoraViewSet(viewsets.ModelViewSet):
 class TipViewSet(viewsets.ModelViewSet):
     queryset = Tip.objects.all()
     serializer_class = TipSerializer
+
+
+class EvaluationViewSet(viewsets.ModelViewSet):
+    queryset = Evaluation.objects.all()
+    serializer_class = EvaluationSerializer
