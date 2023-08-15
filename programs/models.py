@@ -28,10 +28,14 @@ class Contents(models.Model):
 
 
 class Quiz(models.Model):
+    class QuizAnswer(models.IntegerChoices):
+        O = 1
+        X = 2
+
     program = models.ForeignKey("Program", on_delete=models.CASCADE)
     question = models.TextField()
-    answer = models.BooleanField()
-
+    answer = models.PositiveSmallIntegerField(
+        choices=QuizAnswer.choices)
 
 class Assignment(models.Model):
     submit = models.FileField(upload_to="programs/assignment/submit/%Y%m%d", blank=True, null=True)
@@ -50,3 +54,5 @@ class Tag(models.Model):
 class Program_User_Map(models.Model):
     program = models.ForeignKey("Program", on_delete=models.CASCADE)
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    # 찜
+    is_want = models.BooleanField(default=False)
