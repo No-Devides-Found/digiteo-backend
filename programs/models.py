@@ -55,4 +55,15 @@ class Program_User_Map(models.Model):
     program = models.ForeignKey("Program", on_delete=models.CASCADE)
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     # 찜
-    is_want = models.BooleanField(default=False)
+    wish = models.BooleanField(default=False)
+    participate = models.BooleanField(default=False)
+    progress = models.IntegerField(default=0)
+
+    def get_wish(self):
+        return self.wish
+
+    def get_participate(self):
+        return self.participate
+    
+    def get_progress(self):
+        return self.progress
