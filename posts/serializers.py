@@ -3,6 +3,7 @@ from .models.practice import Practice, Creation
 from .models.models import TargetPost
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
+from .models.evaluation import Evaluation
 
 
 class CreationSerializer(serializers.ModelSerializer):
@@ -77,6 +78,7 @@ class Tip_Tag_MapSerializer(serializers.ModelSerializer):
         model = Tip_Tag_Map
         fields = '__all__'
 
+
 class TipSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField(allow_null=True)
     tag = serializers.SerializerMethodField()
@@ -101,4 +103,14 @@ class TipSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Tip
+        fields = '__all__'
+
+
+class EvaluationSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        evaluation = Evaluation.objects.create(**validated_data)
+        return evaluation
+
+    class Meta:
+        model = Evaluation
         fields = '__all__'
