@@ -1,5 +1,4 @@
 from .serializers import *
-from accounts.serializers import UserSerializer
 from .models import *
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
@@ -41,7 +40,7 @@ class AttendRankViewSet(viewsets.ViewSet):
 
 
 class MyProgramListView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, user_id, format=None):
         program_user_maps = Program_User_Map.objects.filter(user=user_id, participate=True)
