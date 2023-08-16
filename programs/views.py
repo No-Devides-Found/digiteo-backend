@@ -1,5 +1,4 @@
 from .serializers import *
-from accounts.serializers import UserSerializer
 from .models import *
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
