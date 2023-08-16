@@ -178,7 +178,7 @@ REST_FRAMEWORK = {
 REST_AUTH = {
     'SESSION_LOGIN': True,
     'USE_JWT': True,
-    # 'JWT_AUTH_COOKIE': 'access_token',
+    'JWT_AUTH_COOKIE': 'access_token',
     'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
     'JWT_AUTH_HTTPONLY': False,
     "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer"
