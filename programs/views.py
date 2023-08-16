@@ -1,8 +1,8 @@
 from .serializers import *
+from accounts.serializers import UserSerializer
 from .models import *
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
 
 class ProgramViewSet(viewsets.ModelViewSet):
 	queryset = Program.objects.all()
@@ -53,3 +53,13 @@ class AttendRankViewSet(viewsets.ViewSet):
         top_5_programs = sorted_programs[:5]
 
         return Response(top_5_programs)
+    
+
+class MyProgramViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = MyProgramSerializer
+    
+
+    def get_queryset(self):
+        user = self.request.user
+        return Program_User_Map.objects.filter(user=user, participate=True)
