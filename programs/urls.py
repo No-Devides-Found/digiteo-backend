@@ -2,7 +2,7 @@ from django.urls import path, include
 from . import views
 from rest_framework import routers
 
-# # User별 program
+# User별 program
 # program_detail = views.ProgramViewSet.as_view({
 #     'get': 'retrieve',
 #     'put': 'update',
@@ -34,5 +34,6 @@ urlpatterns = [
     path('', include(router_program.urls)),
     path('', include(router_attend_rank.urls)),
     # path('', include(router_myprogram.urls)),
-    # path('myprogram/', views.MyProgramViewSet.as_view({'get': 'list'}), name='myprogram-list'),
+    # path('myprogram/<int:pk>/', program_detail),
+    path('myprogram/<int:user_id>/', views.UserProgramListView.as_view(), name='user-program-list'),
 ]

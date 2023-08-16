@@ -77,13 +77,23 @@ class AssignmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class MyProgramSerializer(serializers.Serializer):
-	program = ProgramSerializer(read_only=True)
+# class MyProgramSerializer(serializers.Serializer):
+# 	program = ProgramSerializer(read_only=True)
 
-	def create(self, validated_data):
-		program = Program.objects.create(**validated_data)
-		return program
+# 	def program(self, obj):
+# 		program = obj.program
+# 		return ProgramSerializer(program).data
 	
-	class Meta:
-		model = Program_User_Map
-		fields = '__all__'
+# 	def create(self, validated_data):
+# 		program = Program_User_Map.objects.create(**validated_data)
+# 		return program
+	
+# 	class Meta:
+# 		model = Program
+# 		fields = '__all__'
+
+# class MyProgramSerializer(serializers.ModelSerializer):
+#     program = ProgramSerializer(read_only=True)
+#     class Meta:
+#         model = Program
+#         fields = '__all__'
