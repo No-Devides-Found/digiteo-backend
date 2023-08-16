@@ -54,6 +54,7 @@ class Tag(models.Model):
 class Program_User_Map(models.Model):
     program = models.ForeignKey("Program", on_delete=models.CASCADE)
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    evaluation = models.OneToOneField("posts.Evaluation", on_delete=models.PROTECT, null=True)
     # 찜
     wish = models.BooleanField(default=False)
     participate = models.BooleanField(default=False)

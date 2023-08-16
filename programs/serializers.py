@@ -3,16 +3,6 @@ from .models import Program, Category, Contents, Quiz, Assignment, Tag, Program_
 from posts.models.evaluation import Evaluation
 
 
-# class Program_Tag_MapSerializer(serializers.ModelSerializer):
-# 	def create(self, validated_data):
-# 		program_tag_map = Program_Tag_Map.objects.create(**validated_data)
-# 		return program_tag_map
-	
-# 	class Meta:
-# 		model = Program_Tag_Map
-# 		fields = '__all__'
-
-
 class ProgramSerializer(serializers.ModelSerializer):
 	tag = serializers.SerializerMethodField(read_only=True)
 	participants_cnt = serializers.SerializerMethodField(read_only=True)
@@ -41,7 +31,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 				total_evaluations += 1
 
 		if total_evaluations == 0:
-			return 0.0
+			return None
 
 		average_score = total_score / total_evaluations
 		return round(average_score, 1)
@@ -53,18 +43,6 @@ class ProgramSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Program
 		fields = '__all__'
-
- 
-# class CategorySerializer(serializers.ModelSerializer):
-#     programs = ProgramSerializer(many=True, read_only=True)
-
-#     def create(self, validated_data):
-#         program = Program.objects.create(**validated_data)
-#         return program
-
-#     class Meta:
-#         model = Category
-#         fields = '__all__'
 
 
 class ContentsSerializer(serializers.ModelSerializer):
@@ -97,14 +75,3 @@ class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = '__all__'
-
-
-# class TagSerializer(serializers.ModelSerializer):
-
-#     def create(self, validated_data):
-#         tag = Tag.objects.create(**validated_data)
-#         return tag
-
-#     class Meta:
-#         model = Tag
-#         fields = '__all__'
