@@ -75,25 +75,3 @@ class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = '__all__'
-
-
-# class MyProgramSerializer(serializers.Serializer):
-# 	program = ProgramSerializer(read_only=True)
-
-# 	def program(self, obj):
-# 		program = obj.program
-# 		return ProgramSerializer(program).data
-	
-# 	def create(self, validated_data):
-# 		program = Program_User_Map.objects.create(**validated_data)
-# 		return program
-	
-# 	class Meta:
-# 		model = Program
-# 		fields = '__all__'
-
-# class MyProgramSerializer(serializers.ModelSerializer):
-#     program = ProgramSerializer(read_only=True)
-#     class Meta:
-#         model = Program
-#         fields = '__all__'

@@ -2,12 +2,6 @@ from django.urls import path, include
 from . import views
 from rest_framework import routers
 
-# User별 program
-# program_detail = views.ProgramViewSet.as_view({
-#     'get': 'retrieve',
-#     'put': 'update',
-#     'patch': 'partial_update',
-# })
 
 # programs/program
 router_program = routers.DefaultRouter()
@@ -25,8 +19,6 @@ router = routers.DefaultRouter()
 router.register('contents', views.ContentsViewSet)
 router.register('quiz', views.QuizViewSet)
 router.register('assignment', views.AssignmentViewSet)
-# router.register('tag', views.TagViewSet)
-# router.register('category', views.CategoryViewSet)
 
 
 urlpatterns = [
@@ -34,6 +26,5 @@ urlpatterns = [
     path('', include(router_program.urls)),
     path('', include(router_attend_rank.urls)),
     # path('', include(router_myprogram.urls)),
-    # path('myprogram/<int:pk>/', program_detail),
-    path('myprogram/<int:user_id>/', views.UserProgramListView.as_view(), name='user-program-list'),
+    path('myprogram/<int:user_id>/', views.MyProgramListView.as_view(), name='user-program-list'),
 ]

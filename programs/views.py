@@ -8,12 +8,6 @@ from rest_framework.views import APIView
 class ProgramViewSet(viewsets.ModelViewSet):
 	queryset = Program.objects.all()
 	serializer_class = ProgramSerializer
-	
-
-
-# class CategoryViewSet(viewsets.ModelViewSet):
-# 	queryset = Category.objects.all()
-# 	serializer_class = CategorySerializer
 
 
 class ContentsViewSet(viewsets.ModelViewSet):
@@ -31,16 +25,6 @@ class AssignmentViewSet(viewsets.ModelViewSet):
 	serializer_class = AssignmentSerializer
 
 
-# class TagViewSet(viewsets.ModelViewSet):
-# 	queryset = Tag.objects.all()
-# 	serializer_class = TagSerializer
-
-
-# class Program_Tag_MapViewSet(viewsets.ModelViewSet):
-# 	queryset = Program_Tag_Map.objects.all()
-# 	serializer_class = Program_Tag_MapSerializer
-
-
 class AttendRankViewSet(viewsets.ViewSet):
     queryset = Program.objects.all()
     serializer_class = ProgramSerializer
@@ -54,18 +38,9 @@ class AttendRankViewSet(viewsets.ViewSet):
         top_5_programs = sorted_programs[:5]
 
         return Response(top_5_programs)
-    
-
-# class MyProgramViewSet(viewsets.ViewSet):
-#     permission_classes = [permissions.IsAuthenticated]
-#     serializer_class = MyProgramSerializer
-
-#     def get_queryset(self):
-#         user = self.request.user
-#         return Program_User_Map.objects.filter(user=user, participate=True)
 
 
-class UserProgramListView(APIView):
+class MyProgramListView(APIView):
     # permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, user_id, format=None):
