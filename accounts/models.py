@@ -60,3 +60,5 @@ class Profile(models.Model):
     job = models.CharField(max_length=10)
     grade = models.CharField(default="", blank=True, max_length=5)
     department = models.CharField(default="", blank=True, max_length=20)
+    img = models.ImageField(upload_to="accounts/profile/%Y%m%d", blank=True, null=True, height_field=None,
+                            width_field=None, max_length=None)
