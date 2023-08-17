@@ -69,6 +69,20 @@ class TargetPostSerializer(serializers.ModelSerializer):
 
 
 class AgoraSerializer(serializers.ModelSerializer):
+    pros_and_cons = serializers.SerializerMethodField(allow_null=True)
+
+    def get_pros_and_cons(self, obj):
+        total = len(Agora.objects.filter(agora_type=2))
+        if total == 0:
+            return {"pros": 50, "cons": 50}
+        print(total)
+        pros = round(len(obj.pros) / total * 100, 1)
+        pros_and_cons = {
+            "pros": pros,
+            "cons": 100 - pros
+        }
+        return pros_and_cons
+    
     def create(self, validated_data):
         agora = Agora.objects.create(**validated_data)
         return agora
