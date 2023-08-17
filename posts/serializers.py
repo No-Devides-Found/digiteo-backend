@@ -78,18 +78,49 @@ class TargetPostSerializer(serializers.ModelSerializer):
 
 class AgoraSerializer(serializers.ModelSerializer):
     pros_and_cons = serializers.SerializerMethodField(allow_null=True)
+    comment = serializers.SerializerMethodField(allow_null=True)
 
     def get_pros_and_cons(self, obj):
-        total = len(Agora.objects.filter(agora_type=2))
+        target_posts = TargetPost.objects.filter(agora=obj.id)
+        total = 0
+        pros_list = []
+
+        for target_post in target_posts:
+            total += Comment.objects.filter(target_post=target_post.id).count()
+            pros_list.append(Comment.objects.filter(pros_and_cons=1, target_post=target_post.id).count())
+        pros = sum(pros_list)
         if total == 0:
             return {"pros": 50, "cons": 50}
-        print(total)
-        pros = round(len(obj.pros) / total * 100, 1)
-        pros_and_cons = {
-            "pros": pros,
-            "cons": 100 - pros
-        }
+        pros_percentage = round(pros / total * 100, 1)
+        pros_and_cons = {"pros": pros_percentage, "cons": 100 - pros_percentage}
         return pros_and_cons
+
+            
+        
+
+        # return total
+        # return {"pros": pros, "cons": 100 - pros}
+        
+        
+    
+        # total = Comment.objects.filter(pros_and_cons__isnull=False, ).count()
+        # print(total)
+        # if total == 0:
+        #     return {"pros": 50, "cons": 50}
+        # pros = Comment.objects.filter(
+        #     pros_and_cons=1, target_post=obj.id).count()
+        # print(pros)
+        # pros_percentage = round(pros / total * 100, 1)
+        # pros_and_cons = {"pros": pros_percentage, "cons": 100 - pros_percentage}
+        # return pros_and_cons
+    
+    def get_comment(self, obj):
+        target_posts = TargetPost.objects.filter(agora=obj.id)
+        comment_list = []
+        for target_post in target_posts:
+            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
+        return comment_list
+
     
     def create(self, validated_data):
         agora = Agora.objects.create(**validated_data)
