@@ -20,6 +20,14 @@ class TargetPost(models.Model):
     # ['qna', 'practice', ...]
     target_post_type = models.CharField(max_length=10, null=False, default="")
 
+    # qna = models.OneToOneField(
+    #     "posts.QnA", null=True, blank=True, on_delete=models.CASCADE)
+    # practice = models.OneToOneField(
+    #     "posts.Practice", null=True, blank=True, on_delete=models.CASCADE)
+    # agora = models.OneToOneField(
+    #     "posts.Agora", null=True, blank=True, on_delete=models.CASCADE)
+    # tip = models.OneToOneField(
+    #     "posts.Tip", null=True, blank=True, on_delete=models.CASCADE)
     qna = models.ForeignKey(
         "posts.QnA", null=True, blank=True, on_delete=models.CASCADE)
     practice = models.ForeignKey(
@@ -47,3 +55,5 @@ class TargetPost(models.Model):
 # 댓글
 class Comment(PostBase):
     content = models.TextField(null=False, default="")
+    target_post = models.ForeignKey(
+        "posts.TargetPost", on_delete=models.CASCADE, null=False)
