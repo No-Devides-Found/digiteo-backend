@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models.practice import Practice, Creation
+from .models.practice import Practice, Creation, Practice_Tag_Map
 from .models.models import TargetPost
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
@@ -15,3 +15,4 @@ admin.site.register(Tip)
 admin.site.register(Tip_Image)
 admin.site.register(Tip_Tag_Map)
 admin.site.register(Evaluation)
+admin.site.register(Practice_Tag_Map)

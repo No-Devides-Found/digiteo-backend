@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models.practice import Practice, Creation
+from .models.practice import Practice, Creation, Practice_Tag_Map
 from .models.models import TargetPost
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
@@ -18,7 +18,15 @@ class CreationSerializer(serializers.ModelSerializer):
 
 class PracticeSerializer(serializers.ModelSerializer):
     creations = CreationSerializer(many=True)
+    tag = serializers.SerializerMethodField()
 
+    def get_tag(self, obj):
+        practice_tag_map = Practice_Tag_Map.objects.filter(practice=obj.id)
+        tag_list = []
+        for practice_tag in practice_tag_map:
+            tag_list.append(practice_tag.tag.name)
+        return tag_list
+    
     def create(self, validated_data):
         creations_data = validated_data.pop('creations')
         practice = Practice.objects.create(**validated_data)
