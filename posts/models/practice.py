@@ -21,3 +21,8 @@ class Practice(PostBase):
         upload_to="practice/thumbnail/%Y%m%d", blank=True, max_length=None)
     create_story = models.TextField()
     review = models.TextField()
+
+
+class Practice_Tag_Map(models.Model):
+    practice = models.ForeignKey("Practice", on_delete=models.CASCADE)
+    tag = models.ForeignKey("programs.Tag", on_delete=models.CASCADE, null=True)
