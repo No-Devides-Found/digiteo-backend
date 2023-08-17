@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models.practice import Practice, Creation, Practice_Tag_Map
-from .models.models import TargetPost
+from .models.models import TargetPost, Comment
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
 from .models.evaluation import Evaluation
@@ -41,6 +41,7 @@ class PracticeSerializer(serializers.ModelSerializer):
 
 class QnASerializer(serializers.ModelSerializer):
     file = serializers.SerializerMethodField(allow_null=True)
+    comment = serializers.SerializerMethodField(allow_null=True)
 
     def get_file(self, obj):
         qna_images = QnA_Image.objects.filter(qna=obj.id)
@@ -48,6 +49,13 @@ class QnASerializer(serializers.ModelSerializer):
         for qna_image in qna_images:
             image_list.append(qna_image.file.url)
         return image_list
+    
+    def get_comment(self, obj):
+        target_posts = TargetPost.objects.filter(qna=obj.id)
+        comment_list = []
+        for target_post in target_posts:
+            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
+        return comment_list
     
     def create(self, validated_data):
         qna = QnA.objects.create(**validated_data)
@@ -104,6 +112,7 @@ class Tip_Tag_MapSerializer(serializers.ModelSerializer):
 class TipSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField(allow_null=True)
     tag = serializers.SerializerMethodField()
+    comment = serializers.SerializerMethodField(allow_null=True)
 
     def get_image(self, obj):
         tip_images = Tip_Image.objects.filter(tip=obj.id)
@@ -118,6 +127,13 @@ class TipSerializer(serializers.ModelSerializer):
         for tip_tag in tip_tag_map:
             tag_list.append(tip_tag.tag.name)
         return tag_list
+    
+    def get_comment(self, obj):
+        comments = TargetPost.objects.filter(tip=obj.id)
+        comment_list = []
+        for comment in comments:
+            comment_list.append(comment.comment)
+        return comment_list
     
     def create(self, validated_data):
         tip = Tip.objects.create(**validated_data)
