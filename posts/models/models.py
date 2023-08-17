@@ -44,6 +44,6 @@ class TargetPost(models.Model):
         raise AssertionError("Target is not set")
 
 
-# # 댓글
-# class Comment(PostBase):
-#     pass
+# 댓글
+class Comment(PostBase):
+    content = models.TextField(null=False, default="")
