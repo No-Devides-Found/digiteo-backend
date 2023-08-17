@@ -45,6 +45,12 @@ class TargetPost(models.Model):
 
 # 댓글
 class Comment(PostBase):
+    class ProsAndConsChoice(models.IntegerChoices):
+        PROS = 1, "Pros"
+        CONS = 2, "Cons"
+
     content = models.TextField(null=False, default="")
+    pros_and_cons = models.PositiveSmallIntegerField(
+        choices=ProsAndConsChoice.choices, null=True, blank=True)
     target_post = models.OneToOneField(
         "posts.TargetPost", on_delete=models.CASCADE, null=False)
