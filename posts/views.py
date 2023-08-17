@@ -1,13 +1,33 @@
 from .serializers import *
 from .models import *
+from django.db.models import Q
 from rest_framework import viewsets, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-class PracticeViewSet(viewsets.ModelViewSet):
-    queryset = Practice.objects.all()
-    serializer_class = PracticeSerializer
+class PracticeList(APIView):
+    def get(self, request, **kwargs):
+        search_title = request.GET.get('search-title')
+        search_nickname = request.GET.get('search-nickname')
+        # 검색어가 없는 경우
+        if (search_title == None and search_nickname == None):
+            queryset = Practice.objects.all().order_by('-created_at')
+        # 제목 검색
+        elif search_title:
+            queryset = Practice.objects.filter(
+                Q(title__icontains=search_title)).order_by('-created_at')
+        # 닉네임 검색
+        elif search_nickname:
+            queryset = Practice.objects.filter(
+                Q(user__profile__nickname__icontains=search_nickname)).order_by('-created_at')
+
+        # 제목 + 닉네임검색
+        else:
+            queryset = Practice.objects.filter(
+                Q(title__icontains=search_title) |
+                Q(user__profile__nickname__icontains=search_title)).order_by('-created_at')
+        return Response(PracticeSerializer(queryset, many=True).data, status=status.HTTP_200_OK)
 
 
 class QnAViewSet(viewsets.ModelViewSet):
