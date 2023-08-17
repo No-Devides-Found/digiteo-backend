@@ -82,16 +82,16 @@ class AgoraSerializer(serializers.ModelSerializer):
 
     def get_pros_and_cons(self, obj):
         target_posts = TargetPost.objects.filter(agora=obj.id)
-        total = 0
-        pros_list = []
-
-        for target_post in target_posts:
-            total += Comment.objects.filter(target_post=target_post.id).count()
-            pros_list.append(Comment.objects.filter(pros_and_cons=1, target_post=target_post.id).count())
-        pros = sum(pros_list)
+        total = target_posts.count()
+        pros_cnt = 0
+        
         if total == 0:
             return {"pros": 50, "cons": 50}
-        pros_percentage = round(pros / total * 100, 1)
+        
+        for target_post in target_posts:
+            pros_cnt += Comment.objects.filter(pros_and_cons=1, target_post=target_post.id).count()
+        
+        pros_percentage = round(pros_cnt / total * 100, 1)
         pros_and_cons = {"pros": pros_percentage, "cons": 100 - pros_percentage}
         return pros_and_cons
 
