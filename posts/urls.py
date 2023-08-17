@@ -10,5 +10,6 @@ router.register('Tip', views.TipViewSet)
 router.register('Evaluation', views.EvaluationViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('mypost/<int:user_id>/',
+         views.MyPostsListView.as_view(), name='user-post-list'),
 ]
