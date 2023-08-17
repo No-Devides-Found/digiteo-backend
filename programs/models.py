@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Program(models.Model):
     title = models.CharField(max_length=50, unique=True)
     introduce = models.TextField()
@@ -12,7 +13,7 @@ class Program_Tag_Map(models.Model):
     program = models.ForeignKey("Program", on_delete=models.CASCADE)
     tag = models.ForeignKey("Tag", on_delete=models.CASCADE, null=True)
 
- 
+
 class Category(models.Model):
     name = models.CharField(max_length=10, unique=True)
 
@@ -37,10 +38,13 @@ class Quiz(models.Model):
     answer = models.PositiveSmallIntegerField(
         choices=QuizAnswer.choices)
 
+
 class Assignment(models.Model):
-    submit = models.FileField(upload_to="programs/assignment/submit/%Y%m%d", blank=True, null=True)
+    submit = models.FileField(
+        upload_to="programs/assignment/submit/%Y%m%d", blank=True, null=True)
     guide_text = models.TextField(default="")
-    guide_ref = models. FileField(upload_to="programs/assignment/guide_ref/%Y%m%d")
+    guide_ref = models. FileField(
+        upload_to="programs/assignment/guide_ref/%Y%m%d")
     title = models.CharField(max_length=50)
 
 
@@ -49,12 +53,13 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class Program_User_Map(models.Model):
     program = models.ForeignKey("Program", on_delete=models.CASCADE)
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
-    evaluation = models.OneToOneField("posts.Evaluation", on_delete=models.PROTECT, null=True)
+    evaluation = models.OneToOneField(
+        "posts.Evaluation", on_delete=models.PROTECT, null=True, blank=True)
     # 찜
     wish = models.BooleanField(default=False)
     participate = models.BooleanField(default=False)
@@ -65,6 +70,6 @@ class Program_User_Map(models.Model):
 
     def get_participate(self):
         return self.participate
-    
+
     def get_progress(self):
         return self.progress
