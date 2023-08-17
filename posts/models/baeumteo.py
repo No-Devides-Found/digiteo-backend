@@ -20,6 +20,11 @@ class Agora(PostBase):
         DISCUSSION = 1, "Discussion"
         # 찬반논쟁
         DEBATE = 2, "Debate"
+    class MyOpinionTypeChoice(models.IntegerChoices):
+        # 찬성
+        PROS = 1, "Pros"
+        # 반대
+        CONS = 2, "Cons"
 
     title = models.CharField(max_length=50)
     thumbnail = models.ImageField(
@@ -28,5 +33,7 @@ class Agora(PostBase):
         choices=AgoraTypeChoice.choices)
     summary = models.TextField(default="")
     my_opinion = models.TextField(default="")
+    my_opinion_type = models.PositiveSmallIntegerField(
+        choices=MyOpinionTypeChoice.choices, blank=True, null=True)
     pros = models.TextField(default="", blank=True, null=True)
     cons = models.TextField(default="", blank=True, null=True)
