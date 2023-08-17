@@ -19,6 +19,7 @@ class CreationSerializer(serializers.ModelSerializer):
 class PracticeSerializer(serializers.ModelSerializer):
     creations = CreationSerializer(many=True)
     tag = serializers.SerializerMethodField()
+    comment = serializers.SerializerMethodField(allow_null=True)
 
     def get_tag(self, obj):
         practice_tag_map = Practice_Tag_Map.objects.filter(practice=obj.id)
@@ -27,6 +28,13 @@ class PracticeSerializer(serializers.ModelSerializer):
             tag_list.append(practice_tag.tag.name)
         return tag_list
     
+    def get_comment(self, obj):
+        target_posts = TargetPost.objects.filter(practice=obj.id)
+        comment_list = []
+        for target_post in target_posts:
+            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
+        return comment_list
+
     def create(self, validated_data):
         creations_data = validated_data.pop('creations')
         practice = Practice.objects.create(**validated_data)
@@ -94,25 +102,6 @@ class AgoraSerializer(serializers.ModelSerializer):
         pros_percentage = round(pros_cnt / total * 100, 1)
         pros_and_cons = {"pros": pros_percentage, "cons": 100 - pros_percentage}
         return pros_and_cons
-
-            
-        
-
-        # return total
-        # return {"pros": pros, "cons": 100 - pros}
-        
-        
-    
-        # total = Comment.objects.filter(pros_and_cons__isnull=False, ).count()
-        # print(total)
-        # if total == 0:
-        #     return {"pros": 50, "cons": 50}
-        # pros = Comment.objects.filter(
-        #     pros_and_cons=1, target_post=obj.id).count()
-        # print(pros)
-        # pros_percentage = round(pros / total * 100, 1)
-        # pros_and_cons = {"pros": pros_percentage, "cons": 100 - pros_percentage}
-        # return pros_and_cons
     
     def get_comment(self, obj):
         target_posts = TargetPost.objects.filter(agora=obj.id)
@@ -160,10 +149,10 @@ class TipSerializer(serializers.ModelSerializer):
         return tag_list
     
     def get_comment(self, obj):
-        comments = TargetPost.objects.filter(tip=obj.id)
+        target_posts = TargetPost.objects.filter(tip=obj.id)
         comment_list = []
-        for comment in comments:
-            comment_list.append(comment.comment)
+        for target_post in target_posts:
+            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
         return comment_list
     
     def create(self, validated_data):
