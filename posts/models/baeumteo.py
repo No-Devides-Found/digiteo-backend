@@ -28,3 +28,5 @@ class Agora(PostBase):
         choices=AgoraTypeChoice.choices)
     summary = models.TextField(default="")
     my_opinion = models.TextField(default="")
+    pros = models.TextField(default="", blank=True, null=True)
+    cons = models.TextField(default="", blank=True, null=True)
