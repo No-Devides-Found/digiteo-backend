@@ -2,23 +2,24 @@ from django.db import models
 
 
 class Program(models.Model):
+    class CategoryChoice(models.IntegerChoices):
+        COMMUNICATION = 1, "Communication"
+        TECHNOLOGY = 2, "Technology"
+        INFORMATION = 3, "Information"
+        SOCIAL = 4, "Social"
+        CULTURE = 5, "Culture"
+
     title = models.CharField(max_length=50, unique=True)
     introduce = models.TextField()
     assignment_id = models.ForeignKey("Assignment", on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to="programs/thumbnail/%Y%m%d")
-    category = models.ForeignKey("Category", on_delete=models.CASCADE)
+    category = models.PositiveIntegerField(
+        choices=CategoryChoice.choices)
 
 
 class Program_Tag_Map(models.Model):
     program = models.ForeignKey("Program", on_delete=models.CASCADE)
     tag = models.ForeignKey("Tag", on_delete=models.CASCADE, null=True)
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=10, unique=True)
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class Contents(models.Model):
@@ -64,6 +65,8 @@ class Program_User_Map(models.Model):
     wish = models.BooleanField(default=False)
     participate = models.BooleanField(default=False)
     progress = models.IntegerField(default=0)
+    assignment = models.FileField(
+        upload_to="programs/assignment/submit/%Y%m%d", blank=True, null=True)
 
     def get_wish(self):
         return self.wish

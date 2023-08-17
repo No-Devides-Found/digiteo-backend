@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Program, Category, Contents, Quiz, Assignment, Tag, Program_Tag_Map, Program_User_Map
+from .models import Program, Contents, Quiz, Assignment, Tag, Program_Tag_Map, Program_User_Map
 from posts.models.evaluation import Evaluation
 
 
