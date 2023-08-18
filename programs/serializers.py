@@ -8,6 +8,7 @@ class ProgramSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField(read_only=True)
     participants_cnt = serializers.SerializerMethodField(read_only=True)
     score = serializers.SerializerMethodField(read_only=True)
+    reviews = serializers.SerializerMethodField(read_only=True)
     progress = serializers.SerializerMethodField(read_only=True)
 
     def get_participants_cnt(self, obj):
