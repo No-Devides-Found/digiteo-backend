@@ -10,17 +10,37 @@ class PracticeList(APIView):
     def get(self, request, **kwargs):
         search_title = request.GET.get('search-title')
         search_nickname = request.GET.get('search-nickname')
+        search_type = request.GET.get('search-type')
+        queryset = Practice.objects.all().order_by('-created_at')
         # 검색어가 없는 경우
-        if (search_title == None and search_nickname == None):
-            queryset = Practice.objects.all().order_by('-created_at')
+        if (search_title == None and search_nickname == None and search_type == None):
+            creations = Creation.objects.filter(file_type=1)
+            practice_ids = creations.values_list('practice_id', flat=True)
+            queryset = queryset.filter(id__in=practice_ids)
+
         # 제목 검색
-        elif search_title:
+        if search_title:
             queryset = Practice.objects.filter(
                 Q(title__icontains=search_title)).order_by('-created_at')
         # 닉네임 검색
-        elif search_nickname:
+        if search_nickname:
             queryset = Practice.objects.filter(
                 Q(user__profile__nickname__icontains=search_nickname)).order_by('-created_at')
+        # 파일 타입으로 검색
+        if search_type:
+            if search_type == "1": 
+                creations = Creation.objects.filter(file_type=1)
+            elif search_type == "2": 
+                creations = Creation.objects.filter(file_type=2)
+            elif search_type == "3": 
+                creations = Creation.objects.filter(file_type=3)
+            elif search_type == "4": 
+                creations = Creation.objects.filter(file_type=4)
+            elif search_type == "5": 
+                creations = Creation.objects.filter(file_type=5)
+            practice_ids = creations.values_list('practice_id', flat=True)
+            queryset = queryset.filter(id__in=practice_ids)
+
 
         # 제목 + 닉네임검색
         # http://127.0.0.1:8000/posts/practice-list/?search-nickname=test&search-title=test
