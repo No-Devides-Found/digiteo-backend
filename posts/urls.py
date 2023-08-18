@@ -7,6 +7,7 @@ router.register('QnA', views.QnAViewSet)
 router.register('Agora', views.AgoraViewSet)
 router.register('Tip', views.TipViewSet)
 router.register('Evaluation', views.EvaluationViewSet)
+router.register('Liked', views.LikedViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

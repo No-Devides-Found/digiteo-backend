@@ -78,3 +78,8 @@ class MyPostsListView(APIView):
         tip_serializer = TipSerializer(tips, many=True)
 
         return Response({"qna_list": list(qna_list.values()), "agora_list": list(agora_list.values()), "tip_list": list(tip_list.values()), "qnas": qna_serializer.data, "agoras": agora_serializer.data, "tips": tip_serializer.data}, status=status.HTTP_200_OK)
+
+
+class LikedViewSet(viewsets.ModelViewSet):
+    queryset = Liked.objects.all()
+    serializer_class = LikedSerializer

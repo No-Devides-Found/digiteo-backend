@@ -54,3 +54,9 @@ class Comment(PostBase):
         choices=ProsAndConsChoice.choices, null=True, blank=True)
     target_post = models.OneToOneField(
         "posts.TargetPost", on_delete=models.CASCADE, null=False)
+    
+
+class Liked(models.Model):
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    target_post = models.OneToOneField(
+        "posts.TargetPost", on_delete=models.CASCADE, null=False)
