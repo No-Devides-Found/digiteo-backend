@@ -25,7 +25,8 @@ class Program_Tag_Map(models.Model):
 class Contents(models.Model):
     program = models.ForeignKey("Program", on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    content = models.TextField()
+    content = models.FileField(
+        upload_to="programs/contents/%Y%m%d", blank=True, null=True)
     order = models.IntegerField()
 
 
@@ -46,7 +47,7 @@ class Assignment(models.Model):
     guide_text = models.TextField(default="")
     guide_ref = models. FileField(
         upload_to="programs/assignment/guide_ref/%Y%m%d")
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, null=True, blank=True)
 
 
 class Tag(models.Model):
