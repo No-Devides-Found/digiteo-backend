@@ -55,11 +55,13 @@ class PracticeSerializer(serializers.ModelSerializer):
         return tag_list
 
     def get_comment(self, obj):
-        target_posts = TargetPost.objects.filter(practice=obj.id)
+        target_posts = TargetPost.objects.filter(comment=obj.id)
         comment_list = []
+
         for target_post in target_posts:
-            comment_list.append(Comment.objects.filter(
-                target_post=target_post.id).values())
+            comment = Comment.objects.filter(target_post=target_post.id)
+            serializer = CommentSerializer(comment, many=True)
+            comment_list.extend(serializer.data)
         return comment_list
 
     def get_liked_cnt(self, obj):
