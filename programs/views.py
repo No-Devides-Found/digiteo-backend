@@ -52,28 +52,15 @@ class MyProgramListView(APIView):
         serializer = ProgramSerializer(programs, many=True)
         return Response({"program_user_maps": list(program_user_maps.values()), "programs": serializer.data}, status=status.HTTP_200_OK)
 
-
-# class ProgramContentViewSet(viewsets.ViewSet):
-#     queryset = Program.objects.all()
-#     serializer_class = ProgramContentSerializer
-
-#     def list(self, request, pk=None):
-#         program = self.get_object()
-#         contents = program.contents.all()
-
-#         serializer = self.serializer_class(program)
-#         content_serializer = ContentsSerializer(contents, many=True)
-
-#         return Response({
-#             'program_info': serializer.data,
-#             'contents': content_serializer.data
-#         })
-
 class ProgramContentViewSet(viewsets.ViewSet):
     serializer_class = ProgramContentSerializer
 
     def list(self, request, pk=None):
-        program = Program.objects.get(pk=pk)  # 해당 프로그램 가져오기
+        try:
+            program = Program.objects.get(pk=pk)  # 해당 프로그램 가져오기
+        except Program.DoesNotExist:
+            return Response({"error": "Program not found."}, status=404)
+
         contents = Contents.objects.filter(program=program)  # 해당 프로그램에 속하는 컨텐츠들
 
         serializer = self.serializer_class(program)
