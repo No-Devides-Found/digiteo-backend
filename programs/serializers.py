@@ -8,7 +8,7 @@ class ProgramSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField(read_only=True)
     participants_cnt = serializers.SerializerMethodField(read_only=True)
     score = serializers.SerializerMethodField(read_only=True)
-    reviews = serializers.SerializerMethodField(read_only=True)
+    progress = serializers.SerializerMethodField(read_only=True)
 
     def get_participants_cnt(self, obj):
         program_user_maps = Program_User_Map.objects.filter(
@@ -38,6 +38,25 @@ class ProgramSerializer(serializers.ModelSerializer):
 
         average_score = total_score / total_evaluations
         return round(average_score, 1)
+    
+    def get_progress(self, obj):
+        user = self.context['request'].user
+        total_progress = Contents.objects.filter(program=obj.id).count()
+        if total_progress == 0:
+            return None
+
+        if user.is_authenticated:
+            program_user_map = Program_User_Map.objects.filter(program=obj.id, user=user).first()
+
+            if program_user_map:
+                last_content = program_user_map.last_content
+
+            else:
+                last_content = 0
+        else:
+            last_content = 0
+    
+        return last_content / total_progress
 
     def get_reviews(self, obj):
         program_user_maps = list(
@@ -92,4 +111,15 @@ class AssignmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Assignment
+        fields = '__all__'
+
+
+
+class ProgramUserMapSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        program_user_map = Program_User_Map.objects.create(**validated_data)
+        return program_user_map
+
+    class Meta:
+        model = Program_User_Map
         fields = '__all__'
