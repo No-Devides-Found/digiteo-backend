@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from .models import Program, Contents, Quiz, Assignment, Tag, Program_Tag_Map, Program_User_Map
 from posts.models.evaluation import Evaluation
+from posts.serializers import EvaluationSerializer
 
 
 class ProgramSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField(read_only=True)
     participants_cnt = serializers.SerializerMethodField(read_only=True)
     score = serializers.SerializerMethodField(read_only=True)
+    reviews = serializers.SerializerMethodField(read_only=True)
 
     def get_participants_cnt(self, obj):
         program_user_maps = Program_User_Map.objects.filter(
@@ -36,6 +38,21 @@ class ProgramSerializer(serializers.ModelSerializer):
 
         average_score = total_score / total_evaluations
         return round(average_score, 1)
+
+    def get_reviews(self, obj):
+        program_user_maps = list(
+            Program_User_Map.objects.filter(program=obj).values())
+        evaluations = []
+        for item in program_user_maps:
+            # print(item)
+            evaluation = Evaluation.objects.filter(
+                id=item['evaluation_id']).first()
+            if evaluation is None:
+                continue
+            eval_serializer = EvaluationSerializer(evaluation, many=False)
+            evaluations.append(eval_serializer.data)
+
+        return evaluations
 
     def create(self, validated_data):
         program = Program.objects.create(**validated_data)

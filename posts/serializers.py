@@ -4,6 +4,8 @@ from .models.models import TargetPost, Comment, Liked
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
 from .models.evaluation import Evaluation
+from accounts.models import Profile
+from accounts.serializers import ProfileSerializer
 
 
 class CreationSerializer(serializers.ModelSerializer):
@@ -27,12 +29,13 @@ class PracticeSerializer(serializers.ModelSerializer):
         for practice_tag in practice_tag_map:
             tag_list.append(practice_tag.tag.name)
         return tag_list
-    
+
     def get_comment(self, obj):
         target_posts = TargetPost.objects.filter(practice=obj.id)
         comment_list = []
         for target_post in target_posts:
-            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
+            comment_list.append(Comment.objects.filter(
+                target_post=target_post.id).values())
         return comment_list
 
     def create(self, validated_data):
@@ -57,14 +60,15 @@ class QnASerializer(serializers.ModelSerializer):
         for qna_image in qna_images:
             image_list.append(qna_image.file.url)
         return image_list
-    
+
     def get_comment(self, obj):
         target_posts = TargetPost.objects.filter(qna=obj.id)
         comment_list = []
         for target_post in target_posts:
-            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
+            comment_list.append(Comment.objects.filter(
+                target_post=target_post.id).values())
         return comment_list
-    
+
     def create(self, validated_data):
         qna = QnA.objects.create(**validated_data)
         return qna
@@ -92,25 +96,27 @@ class AgoraSerializer(serializers.ModelSerializer):
         target_posts = TargetPost.objects.filter(agora=obj.id)
         total = target_posts.count()
         pros_cnt = 0
-        
+
         if total == 0:
             return {"pros": 50, "cons": 50}
-        
+
         for target_post in target_posts:
-            pros_cnt += Comment.objects.filter(pros_and_cons=1, target_post=target_post.id).count()
-        
+            pros_cnt += Comment.objects.filter(pros_and_cons=1,
+                                               target_post=target_post.id).count()
+
         pros_percentage = round(pros_cnt / total * 100, 1)
-        pros_and_cons = {"pros": pros_percentage, "cons": 100 - pros_percentage}
+        pros_and_cons = {"pros": pros_percentage,
+                         "cons": 100 - pros_percentage}
         return pros_and_cons
-    
+
     def get_comment(self, obj):
         target_posts = TargetPost.objects.filter(agora=obj.id)
         comment_list = []
         for target_post in target_posts:
-            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
+            comment_list.append(Comment.objects.filter(
+                target_post=target_post.id).values())
         return comment_list
 
-    
     def create(self, validated_data):
         agora = Agora.objects.create(**validated_data)
         return agora
@@ -119,11 +125,12 @@ class AgoraSerializer(serializers.ModelSerializer):
         model = Agora
         fields = '__all__'
 
+
 class Tip_Tag_MapSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         tip_tag_map = Tip_Tag_Map.objects.create(**validated_data)
         return tip_tag_map
-    
+
     class Meta:
         model = Tip_Tag_Map
         fields = '__all__'
@@ -140,34 +147,42 @@ class TipSerializer(serializers.ModelSerializer):
         for tip_image in tip_images:
             image_list.append(tip_image.image.url)
         return image_list
-    
+
     def get_tag(self, obj):
         tip_tag_map = Tip_Tag_Map.objects.filter(tip=obj.id)
         tag_list = []
         for tip_tag in tip_tag_map:
             tag_list.append(tip_tag.tag.name)
         return tag_list
-    
+
     def get_comment(self, obj):
         target_posts = TargetPost.objects.filter(tip=obj.id)
         comment_list = []
         for target_post in target_posts:
-            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
+            comment_list.append(Comment.objects.filter(
+                target_post=target_post.id).values())
         return comment_list
-    
+
     def create(self, validated_data):
         tip = Tip.objects.create(**validated_data)
         return tip
-    
+
     class Meta:
         model = Tip
         fields = '__all__'
 
 
 class EvaluationSerializer(serializers.ModelSerializer):
+    user_profile = serializers.SerializerMethodField()
+
     def create(self, validated_data):
         evaluation = Evaluation.objects.create(**validated_data)
         return evaluation
+
+    def get_user_profile(self, obj):
+        user_profile = Profile.objects.filter(user=obj.user)[0]
+        serializer = ProfileSerializer(user_profile, many=False)
+        return serializer.data
 
     class Meta:
         model = Evaluation

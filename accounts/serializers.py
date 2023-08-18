@@ -3,7 +3,9 @@ from .models import User, Profile
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
 
-class ProfileSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+    img = serializers.ImageField(use_url=True)
+
     def create(self, validated_data):
         profile = Profile.objects.create(**validated_data)
         return profile
@@ -24,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password']
+        fields = ['email', 'password']
 
 
 class CustomRegisterSerializer(RegisterSerializer):
