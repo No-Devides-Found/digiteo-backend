@@ -64,9 +64,9 @@ class Program_User_Map(models.Model):
     # 찜
     wish = models.BooleanField(default=False)
     participate = models.BooleanField(default=False)
-    progress = models.IntegerField(default=0)
     assignment = models.FileField(
         upload_to="programs/assignment/submit/%Y%m%d", blank=True, null=True)
+    last_content = models.IntegerField(default=0)
 
     def get_wish(self):
         return self.wish
