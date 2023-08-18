@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models.practice import Practice, Creation, Practice_Tag_Map
-from .models.models import TargetPost, Comment
+from .models.models import TargetPost, Comment, Liked
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
 from .models.evaluation import Evaluation
@@ -172,3 +172,19 @@ class EvaluationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluation
         fields = '__all__'
+
+
+class LikedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Liked
+        fields = '__all__'
+
+    def destroy(self, validated_data):
+        instance = self.instance
+        user = self.context['request'].user
+
+        # Check if the user owns this like
+        if instance.user == user:
+            instance.delete()
+        else:
+            pass
