@@ -1,9 +1,15 @@
 from .serializers import *
 from .models import *
+from programs.models import *
+from programs.serializers import *
 from django.db.models import Q
 from rest_framework import viewsets, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+class ProgramContentViewSet(viewsets.ViewSet):
+    queryset = Program.objects.all()
+    serializer_class = ProgramContentSerializer
 
 
 class PracticeList(APIView):
@@ -99,3 +105,7 @@ class PostLikedViewSet(viewsets.ModelViewSet):
 class PracticeViewSet(viewsets.ModelViewSet):
     queryset = Practice.objects.all()
     serializer_class = PracticeSerializer
+
+class ProgramContentViewSet(viewsets.ViewSet):
+    queryset = Contents.objects.all()
+    serializer_class = ProgramContentSerializer

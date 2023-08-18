@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Program(models.Model):
     class CategoryChoice(models.IntegerChoices):
         COMMUNICATION = 1, "Communication"
