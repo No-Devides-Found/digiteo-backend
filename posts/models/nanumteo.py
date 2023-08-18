@@ -17,3 +17,9 @@ class Tip_Image(models.Model):
 class Tip_Tag_Map(models.Model):
     tip = models.ForeignKey("Tip", on_delete=models.CASCADE)
     tag = models.ForeignKey("programs.Tag", on_delete=models.CASCADE, null=True)
+
+
+class TipCommentLiked(models.Model):
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    tip_comment = models.OneToOneField(
+        "posts.Comment", on_delete=models.CASCADE, null=False)

@@ -37,3 +37,9 @@ class Agora(PostBase):
         choices=MyOpinionTypeChoice.choices, blank=True, null=True)
     pros = models.TextField(default="", blank=True, null=True)
     cons = models.TextField(default="", blank=True, null=True)
+
+
+class AgoraCommentLiked(models.Model):
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    agora_comment = models.OneToOneField(
+        "posts.Comment", on_delete=models.CASCADE, null=False)
