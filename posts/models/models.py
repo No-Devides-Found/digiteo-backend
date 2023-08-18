@@ -56,7 +56,16 @@ class Comment(PostBase):
         "posts.TargetPost", on_delete=models.CASCADE, null=False)
     
 
-class Liked(models.Model):
+class PostLiked(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     target_post = models.OneToOneField(
         "posts.TargetPost", on_delete=models.CASCADE, null=False)
+    
+
+
+class CommentLiked(models.Model):
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    agora_comment = models.OneToOneField(
+        "posts.Comment", on_delete=models.CASCADE, null=False, related_name="agora_comment")
+    tip_comment = models.OneToOneField(
+        "posts.Comment", on_delete=models.CASCADE, null=False, related_name="tip_comment")

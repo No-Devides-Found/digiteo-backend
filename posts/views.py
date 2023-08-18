@@ -1,5 +1,6 @@
 from .serializers import *
 from .models import *
+# from .models.models import *
 from django.db.models import Q
 from rest_framework import viewsets, permissions, status
 from rest_framework.views import APIView
@@ -80,6 +81,6 @@ class MyPostsListView(APIView):
         return Response({"qna_list": list(qna_list.values()), "agora_list": list(agora_list.values()), "tip_list": list(tip_list.values()), "qnas": qna_serializer.data, "agoras": agora_serializer.data, "tips": tip_serializer.data}, status=status.HTTP_200_OK)
 
 
-class LikedViewSet(viewsets.ModelViewSet):
-    queryset = Liked.objects.all()
+class PostLikedViewSet(viewsets.ModelViewSet):
+    queryset = PostLiked.objects.all()
     serializer_class = LikedSerializer
