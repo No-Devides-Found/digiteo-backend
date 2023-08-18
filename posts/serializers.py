@@ -1,10 +1,18 @@
 from rest_framework import serializers
 from .models.practice import Practice, Creation, Practice_Tag_Map
 from .models.models import TargetPost, Comment, PostLiked
-from .models.baeumteo import QnA, QnA_Image, Agora
-from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
+from .models.baeumteo import QnA, QnA_Image, Agora, AgoraCommentLiked
+from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map, TipCommentLiked
 from .models.evaluation import Evaluation
 
+class CommentSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        comment = Comment.objects.create(**validated_data)
+        return comment
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
 
 class CreationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
@@ -129,14 +137,27 @@ class AgoraSerializer(serializers.ModelSerializer):
         pros_percentage = round(pros_cnt / total * 100, 1)
         pros_and_cons = {"pros": pros_percentage, "cons": 100 - pros_percentage}
         return pros_and_cons
-    
+
     def get_comment(self, obj):
         target_posts = TargetPost.objects.filter(agora=obj.id)
         comment_list = []
+
         for target_post in target_posts:
-            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
+            comments = Comment.objects.filter(target_post=target_post.id)
+            comment_data = []
+
+            for comment in comments:
+                comment_likes = AgoraCommentLiked.objects.filter(agora_comment=comment.id).count()
+                comment_data.append({
+                    "comment": CommentSerializer(comment).data,
+                    "likes": comment_likes
+                })
+
+            comment_list.append(comment_data)
+
         return comment_list
-    
+
+
     def get_liked_cnt(self, obj):
         target_posts = TargetPost.objects.filter(agora=obj.id)
         cnt = 0
@@ -187,6 +208,25 @@ class TipSerializer(serializers.ModelSerializer):
             tag_list.append(tip_tag.tag.name)
         return tag_list
     
+    def get_comment(self, obj):
+        target_posts = TargetPost.objects.filter(tip=obj.id)
+        comment_list = []
+
+        for target_post in target_posts:
+            comments = Comment.objects.filter(target_post=target_post.id)
+            comment_data = []
+
+            for comment in comments:
+                comment_likes = TipCommentLiked.objects.filter(tip_comment=comment.id).count()
+                comment_data.append({
+                    "comment": CommentSerializer(comment).data,
+                    "likes": comment_likes
+                })
+
+            comment_list.append(comment_data)
+
+        return comment_list
+    
     def get_liked_cnt(self, obj):
         target_posts = TargetPost.objects.filter(tip=obj.id)
         cnt = 0
@@ -196,14 +236,9 @@ class TipSerializer(serializers.ModelSerializer):
         
         if cnt is None:
             return 0
-        
+
         return cnt
     
-    def get_liked_cnt(self, obj):
-        cnt = PostLiked.objects.filter(target_post=obj.id).count()
-        if cnt is None:
-            return 0
-        return cnt
     
     def create(self, validated_data):
         tip = Tip.objects.create(**validated_data)
@@ -229,6 +264,37 @@ class LikedSerializer(serializers.ModelSerializer):
         model = PostLiked
         fields = '__all__'
 
+    def destroy(self, validated_data):
+        instance = self.instance
+        user = self.context['request'].user
+
+        # Check if the user owns this like
+        if instance.user == user:
+            instance.delete()
+        else:
+            pass
+
+class AgoraCommentLikedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AgoraCommentLiked
+        fields = '__all__'
+    
+    def destroy(self, validated_data):
+        instance = self.instance
+        user = self.context['request'].user
+
+        # Check if the user owns this like
+        if instance.user == user:
+            instance.delete()
+        else:
+            pass
+
+
+class TipCommentLikedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipCommentLiked
+        fields = '__all__'
+    
     def destroy(self, validated_data):
         instance = self.instance
         user = self.context['request'].user
