@@ -9,6 +9,13 @@ from accounts.serializers import ProfileSerializer
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user_profile = serializers.SerializerMethodField()
+
+    def get_user_profile(self, obj):
+        user_profile = Profile.objects.filter(user=obj.user)[0]
+        serializer = ProfileSerializer(user_profile, many=False)
+        return serializer.data
+
     def create(self, validated_data):
         comment = Comment.objects.create(**validated_data)
         return comment
@@ -84,6 +91,12 @@ class QnASerializer(serializers.ModelSerializer):
     file = serializers.SerializerMethodField(allow_null=True)
     comment = serializers.SerializerMethodField(allow_null=True)
     liked_cnt = serializers.SerializerMethodField(allow_null=True)
+    user_profile = serializers.SerializerMethodField()
+
+    def get_user_profile(self, obj):
+        user_profile = Profile.objects.filter(user=obj.user)[0]
+        serializer = ProfileSerializer(user_profile, many=False)
+        return serializer.data
 
     def get_tag(self, obj):
         qna_tag_map = QnA_Tag_Map.objects.filter(qna=obj.id)
@@ -142,6 +155,12 @@ class AgoraSerializer(serializers.ModelSerializer):
     pros_and_cons = serializers.SerializerMethodField(allow_null=True)
     comment = serializers.SerializerMethodField(allow_null=True)
     liked_cnt = serializers.SerializerMethodField(allow_null=True)
+    user_profile = serializers.SerializerMethodField()
+
+    def get_user_profile(self, obj):
+        user_profile = Profile.objects.filter(user=obj.user)[0]
+        serializer = ProfileSerializer(user_profile, many=False)
+        return serializer.data
 
     def get_pros_and_cons(self, obj):
         target_posts = TargetPost.objects.filter(agora=obj.id)
@@ -203,6 +222,7 @@ class TipSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     comment = serializers.SerializerMethodField(allow_null=True)
     liked_cnt = serializers.SerializerMethodField(allow_null=True)
+    user_profile = serializers.SerializerMethodField()
 
     def get_image(self, obj):
         tip_images = Tip_Image.objects.filter(tip=obj.id)
@@ -234,6 +254,11 @@ class TipSerializer(serializers.ModelSerializer):
                     "likes": comment_likes
                 })
         return comment_list
+
+    def get_user_profile(self, obj):
+        user_profile = Profile.objects.filter(user=obj.user)[0]
+        serializer = ProfileSerializer(user_profile, many=False)
+        return serializer.data
 
     def create(self, validated_data):
         tip = Tip.objects.create(**validated_data)
