@@ -35,7 +35,7 @@ class PracticeList(APIView):
                 Q(title__icontains=search_nickname) |
                 Q(user__profile__nickname__icontains=search_title) |
                 Q(user__profile__nickname__icontains=search_nickname)
-                ).order_by('-created_at')
+            ).order_by('-created_at')
         return Response(PracticeSerializer(queryset, many=True).data, status=status.HTTP_200_OK)
 
 

@@ -4,7 +4,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-    img = serializers.ImageField(use_url=True)
+    img = serializers.ImageField(use_url=True, allow_null=True)
 
     def create(self, validated_data):
         profile = Profile.objects.create(**validated_data)
