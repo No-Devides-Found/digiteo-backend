@@ -32,7 +32,7 @@ class AttendRankViewSet(viewsets.ViewSet):
 
     def list(self, request):
         programs = Program.objects.all()
-        serializer = ProgramSerializer(programs, many=True)
+        serializer = ProgramSerializer(programs, many=True) # context={'request':request}
 
         sorted_programs = sorted(
             serializer.data, key=lambda x: x['participants_cnt'], reverse=True)
