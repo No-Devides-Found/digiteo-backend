@@ -25,7 +25,7 @@ class CreationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Creation
-        fields = '__all__'
+        fields = ['order', 'filename', 'file', 'file_type']
 
 
 class PracticeSerializer(serializers.ModelSerializer):
@@ -33,6 +33,12 @@ class PracticeSerializer(serializers.ModelSerializer):
     tag = serializers.SerializerMethodField()
     comment = serializers.SerializerMethodField(allow_null=True)
     liked_cnt = serializers.SerializerMethodField(allow_null=True)
+    user_profile = serializers.SerializerMethodField()
+
+    def get_user_profile(self, obj):
+        user_profile = Profile.objects.filter(user=obj.user)[0]
+        serializer = ProfileSerializer(user_profile, many=False)
+        return serializer.data
 
     def get_tag(self, obj):
         practice_tag_map = Practice_Tag_Map.objects.filter(practice=obj.id)
@@ -85,7 +91,7 @@ class QnASerializer(serializers.ModelSerializer):
         for qna_tag in qna_tag_map:
             tag_list.append(qna_tag.tag.name)
         return tag_list
-    
+
     def get_file(self, obj):
         qna_images = QnA_Image.objects.filter(qna=obj.id)
         image_list = []

@@ -84,3 +84,8 @@ class MyPostsListView(APIView):
 class PostLikedViewSet(viewsets.ModelViewSet):
     queryset = PostLiked.objects.all()
     serializer_class = LikedSerializer
+
+
+class PracticeViewSet(viewsets.ModelViewSet):
+    queryset = Practice.objects.all()
+    serializer_class = PracticeSerializer

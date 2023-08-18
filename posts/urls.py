@@ -8,6 +8,7 @@ router.register('Agora', views.AgoraViewSet)
 router.register('Tip', views.TipViewSet)
 router.register('Evaluation', views.EvaluationViewSet)
 router.register('PostLiked', views.PostLikedViewSet)
+router.register('practice', views.PracticeViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
