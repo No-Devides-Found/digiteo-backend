@@ -91,6 +91,7 @@ class ProgramContentSerializer(serializers.ModelSerializer):
     def get_content(self, obj):
         contents = Contents.objects.filter(program=obj.id)
         return ContentsSerializer(contents, many=True).data
+    
 
 class ContentsSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField(read_only=True)
