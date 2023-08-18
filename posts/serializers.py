@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models.practice import Practice, Creation, Practice_Tag_Map
 from .models.models import TargetPost, Comment, PostLiked
-from .models.baeumteo import QnA, QnA_Image, Agora, AgoraCommentLiked
+from .models.baeumteo import QnA, QnA_Image, Agora, AgoraCommentLiked, QnA_Tag_Map
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map, TipCommentLiked
 from .models.evaluation import Evaluation
 from accounts.models import Profile
@@ -74,10 +74,18 @@ class PracticeSerializer(serializers.ModelSerializer):
 
 
 class QnASerializer(serializers.ModelSerializer):
+    tag = serializers.SerializerMethodField(read_only=True)
     file = serializers.SerializerMethodField(allow_null=True)
     comment = serializers.SerializerMethodField(allow_null=True)
     liked_cnt = serializers.SerializerMethodField(allow_null=True)
 
+    def get_tag(self, obj):
+        qna_tag_map = QnA_Tag_Map.objects.filter(qna=obj.id)
+        tag_list = []
+        for qna_tag in qna_tag_map:
+            tag_list.append(qna_tag.tag.name)
+        return tag_list
+    
     def get_file(self, obj):
         qna_images = QnA_Image.objects.filter(qna=obj.id)
         image_list = []

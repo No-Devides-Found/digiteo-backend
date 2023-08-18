@@ -13,6 +13,9 @@ class QnA_Image(models.Model):
     file = models.ImageField(
         upload_to="posts/qna/%Y%m%d", blank=True, null=True)
 
+class QnA_Tag_Map(models.Model):
+    qna = models.ForeignKey("QnA", on_delete=models.CASCADE)
+    tag = models.ForeignKey("programs.Tag", on_delete=models.CASCADE, null=True)
 
 class Agora(PostBase):
     class AgoraTypeChoice(models.IntegerChoices):
