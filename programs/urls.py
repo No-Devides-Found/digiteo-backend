@@ -11,6 +11,8 @@ router_program.register('program', views.ProgramViewSet)
 router_attend_rank = routers.DefaultRouter()
 router_attend_rank.register('attend_rank', views.AttendRankViewSet)
 
+router_content_list = routers.DefaultRouter()
+router_content_list.register('content-list', views.ProgramContentViewSet)
 
 router = routers.DefaultRouter()
 router.register('contents', views.ContentsViewSet)
@@ -22,5 +24,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('', include(router_program.urls)),
     path('', include(router_attend_rank.urls)),
+    path('', include(router_content_list.urls)),
     path('myprogram/<int:user_id>/', views.MyProgramListView.as_view(), name='user-program-list'),
 ]
