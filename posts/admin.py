@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models.practice import Practice, Creation, Practice_Tag_Map
-from .models.models import TargetPost, Comment, Liked
+from .models.models import TargetPost, Comment, PostLiked
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
 from .models.evaluation import Evaluation
@@ -17,4 +17,4 @@ admin.site.register(Tip_Tag_Map)
 admin.site.register(Evaluation)
 admin.site.register(Practice_Tag_Map)
 admin.site.register(Comment)
-admin.site.register(Liked)
+admin.site.register(PostLiked)

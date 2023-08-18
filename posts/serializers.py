@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models.practice import Practice, Creation, Practice_Tag_Map
-from .models.models import TargetPost, Comment, Liked
+from .models.models import TargetPost, Comment, PostLiked
 from .models.baeumteo import QnA, QnA_Image, Agora
 from .models.nanumteo import Tip, Tip_Image, Tip_Tag_Map
 from .models.evaluation import Evaluation
@@ -20,6 +20,7 @@ class PracticeSerializer(serializers.ModelSerializer):
     creations = CreationSerializer(many=True)
     tag = serializers.SerializerMethodField()
     comment = serializers.SerializerMethodField(allow_null=True)
+    liked_cnt = serializers.SerializerMethodField(allow_null=True)
 
     def get_tag(self, obj):
         practice_tag_map = Practice_Tag_Map.objects.filter(practice=obj.id)
@@ -34,6 +35,18 @@ class PracticeSerializer(serializers.ModelSerializer):
         for target_post in target_posts:
             comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
         return comment_list
+    
+    def get_liked_cnt(self, obj):
+        target_posts = TargetPost.objects.filter(practice=obj.id)
+        cnt = 0
+
+        for target_post in target_posts:
+            cnt += PostLiked.objects.filter(target_post=target_post.id).count()
+        
+        if cnt is None:
+            return 0
+        
+        return cnt
 
     def create(self, validated_data):
         creations_data = validated_data.pop('creations')
@@ -50,6 +63,7 @@ class PracticeSerializer(serializers.ModelSerializer):
 class QnASerializer(serializers.ModelSerializer):
     file = serializers.SerializerMethodField(allow_null=True)
     comment = serializers.SerializerMethodField(allow_null=True)
+    liked_cnt = serializers.SerializerMethodField(allow_null=True)
 
     def get_file(self, obj):
         qna_images = QnA_Image.objects.filter(qna=obj.id)
@@ -64,6 +78,18 @@ class QnASerializer(serializers.ModelSerializer):
         for target_post in target_posts:
             comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
         return comment_list
+    
+    def get_liked_cnt(self, obj):
+        target_posts = TargetPost.objects.filter(qna=obj.id)
+        cnt = 0
+
+        for target_post in target_posts:
+            cnt += PostLiked.objects.filter(target_post=target_post.id).count()
+        
+        if cnt is None:
+            return 0
+        
+        return cnt
     
     def create(self, validated_data):
         qna = QnA.objects.create(**validated_data)
@@ -87,6 +113,7 @@ class TargetPostSerializer(serializers.ModelSerializer):
 class AgoraSerializer(serializers.ModelSerializer):
     pros_and_cons = serializers.SerializerMethodField(allow_null=True)
     comment = serializers.SerializerMethodField(allow_null=True)
+    liked_cnt = serializers.SerializerMethodField(allow_null=True)
 
     def get_pros_and_cons(self, obj):
         target_posts = TargetPost.objects.filter(agora=obj.id)
@@ -109,7 +136,18 @@ class AgoraSerializer(serializers.ModelSerializer):
         for target_post in target_posts:
             comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
         return comment_list
+    
+    def get_liked_cnt(self, obj):
+        target_posts = TargetPost.objects.filter(agora=obj.id)
+        cnt = 0
 
+        for target_post in target_posts:
+            cnt += PostLiked.objects.filter(target_post=target_post.id).count()
+        
+        if cnt is None:
+            return 0
+        
+        return cnt
     
     def create(self, validated_data):
         agora = Agora.objects.create(**validated_data)
@@ -133,6 +171,7 @@ class TipSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField(allow_null=True)
     tag = serializers.SerializerMethodField()
     comment = serializers.SerializerMethodField(allow_null=True)
+    liked_cnt = serializers.SerializerMethodField(allow_null=True)
 
     def get_image(self, obj):
         tip_images = Tip_Image.objects.filter(tip=obj.id)
@@ -148,12 +187,23 @@ class TipSerializer(serializers.ModelSerializer):
             tag_list.append(tip_tag.tag.name)
         return tag_list
     
-    def get_comment(self, obj):
+    def get_liked_cnt(self, obj):
         target_posts = TargetPost.objects.filter(tip=obj.id)
-        comment_list = []
+        cnt = 0
+
         for target_post in target_posts:
-            comment_list.append(Comment.objects.filter(target_post=target_post.id).values())
-        return comment_list
+            cnt += PostLiked.objects.filter(target_post=target_post.id).count()
+        
+        if cnt is None:
+            return 0
+        
+        return cnt
+    
+    def get_liked_cnt(self, obj):
+        cnt = PostLiked.objects.filter(target_post=obj.id).count()
+        if cnt is None:
+            return 0
+        return cnt
     
     def create(self, validated_data):
         tip = Tip.objects.create(**validated_data)
@@ -176,7 +226,7 @@ class EvaluationSerializer(serializers.ModelSerializer):
 
 class LikedSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Liked
+        model = PostLiked
         fields = '__all__'
 
     def destroy(self, validated_data):
