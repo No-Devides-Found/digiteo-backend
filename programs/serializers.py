@@ -86,6 +86,11 @@ class ProgramSerializer(serializers.ModelSerializer):
 
 
 class ContentsSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField(read_only=True)
+
+    def get_type(self, obj):
+        return "content"
+    
     def create(self, validated_data):
         contents = Contents.objects.create(**validated_data)
         return contents
@@ -95,7 +100,13 @@ class ContentsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class QuizSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField
+
+    def get_type(self, obj):
+        return "quiz"
+    
     def create(self, validated_data):
         quiz = Quiz.objects.create(**validated_data)
         return quiz
@@ -107,6 +118,10 @@ class QuizSerializer(serializers.ModelSerializer):
 
 class AssignmentSerializer(serializers.ModelSerializer):
     programs = ProgramSerializer(many=True, read_only=True)
+    type = serializers.SerializerMethodField
+
+    def get_type(self, obj):
+        return "assignment"
 
     def create(self, validated_data):
         assignment = Assignment.objects.create(**validated_data)
